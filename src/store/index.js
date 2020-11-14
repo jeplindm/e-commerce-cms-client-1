@@ -30,7 +30,7 @@ export default new Vuex.Store({
           Swal.fire({
             position: 'middle',
             icon: 'success',
-            title: 'Login Successful',
+            title: 'Log In Successful',
             showConfirmButton: false,
             timer: 1500
           })
