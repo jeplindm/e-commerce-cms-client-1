@@ -1,4 +1,6 @@
 <template>
+<section>
+  <Navbar/>
   <div class="dashboard">
     <div class="container">
       <div class="row">
@@ -10,35 +12,27 @@
       </div>
     </div>
   </div>
+</section>
 </template>
 
 <script>
-import axios from '../config/axios'
 import ProductCard from '../components/ProductCard'
+import Navbar from '../components/Navbar'
 
 export default {
   name: 'Dashboard',
-  data () {
-    return {
-      products: []
-    }
-  },
   components: {
-    ProductCard
+    ProductCard,
+    Navbar
   },
   methods: {
     fetchProducts () {
-      axios({
-        url: '/products',
-        method: 'GET'
-      })
-        .then(({ data }) => {
-          console.log(data.product)
-          this.products = data.product
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      this.$store.dispatch('fetchProducts')
+    }
+  },
+  computed: {
+    products () {
+      return this.$store.state.products
     }
   },
   created () {
