@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../config/axios'
 import router from '../router'
+import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -26,11 +27,24 @@ export default new Vuex.Store({
         data: payload
       })
         .then(({ data }) => {
+          Swal.fire({
+            position: 'middle',
+            icon: 'success',
+            title: 'Login Successful',
+            showConfirmButton: false,
+            timer: 1500
+          })
           const token = data.access_token
           localStorage.setItem('token', token)
           router.push('/dashboard')
         })
         .catch((err) => {
+          Swal.fire({
+            position: 'middle',
+            icon: 'error',
+            title: 'ERROR',
+            text: 'Invalid Email / Password'
+          })
           console.log(err)
         })
     },
@@ -57,10 +71,22 @@ export default new Vuex.Store({
         data: payload
       })
         .then(({ data }) => {
+          Swal.fire({
+            position: 'middle',
+            icon: 'success',
+            title: 'Add Product Successful',
+            showConfirmButton: false,
+            timer: 1500
+          })
           router.push({ name: 'Dashboard' })
         })
         .catch(err => {
-          console.log(err)
+          Swal.fire({
+            position: 'middle',
+            icon: 'error',
+            title: 'ERROR',
+            text: err.response.data.message
+          })
         })
     },
     editProduct (context, payload) {
@@ -79,10 +105,22 @@ export default new Vuex.Store({
         }
       })
         .then(() => {
+          Swal.fire({
+            position: 'middle',
+            icon: 'success',
+            title: 'Edit Product Successful',
+            showConfirmButton: false,
+            timer: 1500
+          })
           router.push('/dashboard')
         })
         .catch(err => {
-          console.log(err)
+          Swal.fire({
+            position: 'middle',
+            icon: 'error',
+            title: 'ERROR',
+            text: err.response.data.message
+          })
         })
     },
     fetchProductById (context, id) {
@@ -102,6 +140,23 @@ export default new Vuex.Store({
         })
     },
     deleteProduct (context, id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
       const token = localStorage.getItem('token')
       axios({
         url: '/products/' + id,

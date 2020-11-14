@@ -77,7 +77,7 @@ export default {
       this.$store.dispatch('fetchProductById', id)
     },
     editProduct () {
-      const payload = this.product
+      const payload = this.productById
       this.$store.dispatch('editProduct', payload)
     }
   },
